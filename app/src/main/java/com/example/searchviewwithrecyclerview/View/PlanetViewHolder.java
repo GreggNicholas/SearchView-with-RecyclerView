@@ -14,7 +14,7 @@ public class PlanetViewHolder extends RecyclerView.ViewHolder {
     private TextView planetNameView;
     private ImageView planetImageView;
 
-    public PlanetViewHolder(@NonNull View itemView, TextView planetNameView, ImageView planetImageView) {
+    public PlanetViewHolder(@NonNull View itemView) {
         super(itemView);
         this.planetNameView = itemView.findViewById(R.id.textview_planetname);
         this.planetImageView = itemView.findViewById(R.id.imageview_planetimage);
