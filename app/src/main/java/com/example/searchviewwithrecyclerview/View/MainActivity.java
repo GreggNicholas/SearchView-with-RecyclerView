@@ -48,9 +48,10 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe((List<Planet> planets) -> {
                             planetList.addAll(planets);
+                            recyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
                             planetAdapter = new PlanetAdapter(planetList);
                             recyclerView.setAdapter(planetAdapter);
-                            recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
                         },
                         throwable -> Log.e(TAG, "onFailure: " + throwable));
     }
