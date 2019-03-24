@@ -1,4 +1,4 @@
-package com.example.searchviewwithrecyclerview;
+package com.example.searchviewwithrecyclerview.View;
 
 import android.annotation.SuppressLint;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +13,9 @@ import com.example.searchviewwithrecyclerview.Model.Planet;
 import com.example.searchviewwithrecyclerview.Model.PlanetOuterClass;
 import com.example.searchviewwithrecyclerview.Network.PlanetService;
 import com.example.searchviewwithrecyclerview.Network.RetrofitSingleton;
+import com.example.searchviewwithrecyclerview.R;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -24,8 +26,7 @@ import retrofit2.Retrofit;
 
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
     private static final String TAG = "MainActivity";
-    private List<Planet> planetList = new LinkedList<>();
-    private SearchView searchView;
+    private List<Planet> planetList = new ArrayList<>();
     private RecyclerView recyclerView;
     private PlanetAdapter planetAdapter;
 
@@ -34,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        searchView = findViewById(R.id.cardview_searchview);
+        SearchView searchView = findViewById(R.id.cardview_searchview);
         recyclerView = findViewById(R.id.main_recyclerview);
 
         searchView.setOnQueryTextListener(this);
@@ -45,12 +46,14 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 .subscribeOn(Schedulers.io())
                 .map(PlanetOuterClass::getPlanetList)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(planets -> {planetList.addAll(planets);
-        planetAdapter = new PlanetAdapter(planetList);
-        recyclerView.setAdapter(planetAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));},
-        throwable -> Log.e(TAG, "onFailure: " + throwable));
-                }
+                .subscribe((List<Planet> planets) -> {
+                            planetList.addAll(planets);
+                            planetAdapter = new PlanetAdapter(planetList);
+                            recyclerView.setAdapter(planetAdapter);
+                            recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                        },
+                        throwable -> Log.e(TAG, "onFailure: " + throwable));
+    }
 
     @Override
     public boolean onQueryTextSubmit(String s) {
